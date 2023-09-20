@@ -1,7 +1,27 @@
+[#story]
 == The story behind this solution pattern
 
-A description of the story that was used to build the demo and architectures of this SP.
+Globex is a fictitious retail company. The company recently started a digital transformation and cloud adoption journey. As part of this initiative, the development and devops teams have completed the modernization of the existing multi-tier monolithic retail e-commerce web application. The monolithic application was split in a couple of loosely-coupled microservices and the application was re-hosted on OpenShift.
 
+
+image::globex-phase1.png[width=60%]
+
+As a next step Globex would like to expand business with a *multi-channel retailing strategy* through a mobile app and partner channels. This means that the new channels will need access to their core backend API services. 
+
+To secure the access to Globex's core APIs that will be used by the new channels, an API Management platform is needed. To build a holistic API Management solution, the team decides to adopt an *API First approach* spanning design, governance, mock and management of APIs - which will enable rapid development across teams. 
+
+
+[#solution]
 == The Solution
 
-This is a summary of the solution
+The dev team decides to introduce an API Management solution  to expose, secure and manage the APIs to the application backend services. This allows to introduce new channels (mobile application, B2B transactions) in a controlled way.
+
+Using a contract-first approach, the APIs are specified in a OpenAPI spec document and managed in a registry (Red Hat Openshift Service Registry). Once implemented, they are onboarded on the API management platform.
+Mocking of the APIs allows parallel streams of development between API implementers and API consumers.
+
+In this pattern you will follow this journey:
+
+* *Design* an API resulting in an OpenAPI schema
+* *Govern* the schema with a registry for use by various teams
+* *Mock* the APIs to enable faster inner loop development
+* *Manage and Secure* APIs to allow access for external teams

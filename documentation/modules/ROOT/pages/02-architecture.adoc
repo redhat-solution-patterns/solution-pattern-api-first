@@ -1,33 +1,90 @@
-= Solution Pattern: Name Template
+= Solution Pattern: API First Approach
 :sectnums:
 :sectlinks:
 :doctype: book
 
 = Architecture 
 
-Introduction for the architecture of this solution pattern.
+The architecture will need to support these paradigms
+
+* API First Approach resulting in OpenAPI specifications
+* Enable Parallel development streams
+* Managed API Management platform for securing and managing the backend services
+
 
 == Common Challenges 
+
+There are however a number of challenges with the new requirements:
+
+* Adding new channels remains difficult, with a high risk of tight coupling to the existing services, which would slow down development productivity and time to market.
+* The existing services need to be managed and secured to allow access for external partners and development teams. Governance remains a challenge.
+
+In order to cope with these challenges, the development team decides for a new approach.
+
+*API First approach*: before tackling the development of new services, the API contract is formalized in a OpenAPI spec document. This API design phase is done collaboratively with all stakeholders. Once a first version of the OpenAPI spec document is ready, it is pushed and managed in a service registry, which acts a the system of truth. Mocks are created for the API.
+
+*Parallel Development streams*: The API first approach enables parallel development streams. UI development teams and other API consumers can start their development against the mocked APIs, without having to wait for an actual implementation. In parallel, backend development teams can implement the APIs using modern cloud-native frameworks. They continuously test the implementation against the OpenAPI spec to ensure that the implementation does not break the contract.
+
+*Manage and Secure the APIs*: An API management platform allows to expose the APIs in a secure and managed manner for access by the mobile app and other third party applications.
 
 [#tech_stack]
 == Technology Stack
 
-// Change links and text here as you see fit.
-* https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift]
-* Red Hat Application Foundation
-** https://access.redhat.com/products/quarkus[Quarkus]
-** https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-streams-for-apache-kafka[Kafka Streams]
-* Other:
-** https://www.postgresql.org/[PostgreSQL database]
-** https://helm.sh/[Helm]
+
+* https://developers.redhat.com/products/3scale/overview[Red Hat 3scale API Management^]
+* https://access.redhat.com/documentation/en-us/red_hat_build_of_apicurio_registry[Red Hat build of Apicurio Registry^]
+* https://developers.redhat.com/products/quarkus/overview[Red Hat build of Quarkus^]
+* https://studio.apicur.io/[Apicurio API Designer^]
+* https://microcks.io/[Microcks^]
+* https://quay.io/[Quay^]
 
 
 [#in_depth]
 == An in-depth look at the solution's architecture
 
-Technical description including all or some of the following: architecture ir ed diagrams. In-depth details of the decisions made and solutions used. Description of each service and what it is used for. Description of any integration.
+Here is a view of the deployment architecture. +
+
+image::globex-deployment-apim.png[]
+
+
+* The services (primarily Inventory and Catalog), and the databases are deployed on Red Hat OpenShift. 
+* API Designer and Red Hat build of Apicurio Registry, based on https://www.apicur.io/[Apicurio^, window=info], are used to *Design* and *Govern* the APIs
+* https://microcks.io/[Microcks^, window=info], a popular opensource project, is used to *mock* the APIs
+* https://www.redhat.com/en/technologies/jboss-middleware/3scale[Red Hat 3scale Management^,window=info] is an API Management platform used to *manage and secure* the APIs. 3scale allows you to offer the same set of APIs for different audiences through packaging and unique consumption plans. 
+
 
 [#more_tech]
 == About the Technology Stack
 
-If you want to include more details about the tech stack you used, this is the place.
+=== Apicurio
+As part of the API-First approach, the first step, of course, is to design the APIs. API Designer is a tool to design your APIs (OpenAPI, AsyncAPI) and schemas (Apache Avro, Google Protobuf, JSON Schema). Even before the implementation starts, the various stakeholders come together to define the API specs. The API are defined for the existing catalogue service as well. 
+
+This designer provides a graphical way of designing all the aspects of an OpenAPI - had different paths, datatypes and canned responses. It also allows you to work in both a graphical way of doing things and also with the source. The OpenAPI can be viewed as both a YAML and a JSON document.
+
+[#service-registry]
+=== Service Registry
+Once the API design is complete, and we have the first version of the API, this can now be published  in a schema registry. 
+https://access.redhat.com/documentation/en-us/red_hat_build_of_apicurio_registry[Red Hat build of Apicurio Registry^, window=_blank] is a datastore for sharing standard event schemas and API designs across event-driven and API architectures. 
+
+
+You can upload new artifacts, new versions,  view the metadata, download the specs, view documentation and view the content as well.
+Through Content rules one can validate new versions of the APIs against the existing specs to ensure validity and backward compatibility.
+
+[#Microcks]
+=== Microcks
+We can also build mocks for the APIs using the same OpenAPIs.
+
+Microcks is a tool which allows one to upload the same OpenAPI spec, and to build mocks for the APIs. This is for use of the teams who will actually consume the APIs and they can use these mocks to develop their pieces of code even before the APIs are completely implemented
+
+Each of the mocks that are created out of the OpenAPI's examples   has its own URL which can be invoked to provide a realistic response. This allows front end and mobile app developers to develop against the OpenAPIs specs without waiting for the final implementation of the backend services.
+
+[#3scale]
+=== Red Hat 3scale API Management
+We use the managed *Red Hat 3scale API Management* platform here to publish, manage and secure the backend APIs.
+
+Each API can be configured to be secured using a number of ways. In this case, the APIs  are secured with an API key which should be passed through http request header. 3scale allows you to have various application plans. Developers can subscribe to those APIs and can access APIs through an assigned API key  securely.  You can monitor the APIs and also track usage
+
+As a developer, you would like to build functionality around the APIs. There is also a Development Portal  which is currently under, well, development. You can sign in as a developer here.  This developer  has already subscribed to the API and is given an API key which should be used in all API calls to ensure the calls are authenticated by the API management platform.
+
+The devportal allows viewing Live documentation as well, which is another view of the OpenAPI specs. Developers can try it out  to see what kind of responses they can get back. The developers can also view statistics for their account  in a graph format
+

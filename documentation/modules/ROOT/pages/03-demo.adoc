@@ -1,34 +1,725 @@
-= Solution Pattern: Name Template
+= Solution Pattern: API First Approach
 :sectnums:
 :sectlinks:
 :doctype: book
 
 = See the Solution in Action
 
-== Demonstration
+== Setup the solution
 
-Include here content related to potential existing demos: blogs, articles, recorded videos, walkthrough guides, tutorials.
+To provision the demo you will perform the following steps - each of which are explained in detail in the next sections:
 
-[#demo-video]
-=== Watch a demonstration
+* Gain access to Red Hat OpenShift. This solution pattern has been tested on https://docs.openshift.com/container-platform/4.13/welcome/index.html[OpenShift 4.13^]
+* Ensure you have the tools `oc` and `ansible` installed in your local environment such as your laptop
+* Access the OpenShift cluster with cluster-admin privileges
+* Log in to OpenShift with `cluster-admin` role via cli
+* Run the Ansible playbook
+* Run a  bunch of scripts to deploy the Solution Pattern in your OpenShift cluster
 
-In this video you can see xpto:
 
-video::3yULVMdqJ98[youtube, width=800, height=480]
+=== Pre-requisites
+Here is the list of tools you need in your local enviroment so that you can use the automated installation.
 
-Next, you can learn how to walkthrough this demo.
+* https://docs.openshift.com/container-platform/4.13/cli_reference/openshift_cli/getting-started-cli.html[OpenShift CLI (oc client)^]
+* https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html[Ansible CLI ^]
+** https://docs.ansible.com/ansible/latest/collections/kubernetes/core/k8s_module.html[Ansible kubernetes.core module^]
 
-== Run the demonstration
+To check if you have the cli tools, you can open your terminal and use following commands:
 
-=== Before getting started
-To run this demo, you will need xpto. Adding to that, make sure to have:
+[.console-input]
+[source,shell script]
+----
+oc version #openshift cli client
+ansible --version
+ansible-galaxy --version
+ansible-galaxy collection list #the list should include kubernetes.core
+----
 
-* ABC
-* XYZ
-* XPTO
+If you can't see `kubernetes.core` collection listed, you can install it with `ansible-galaxy`:
+
+[.console-input]
+[source,shell script]
+----
+ansible-galaxy collection install kubernetes.core
+----
+
 
 === Installing the demo
-Installation guide and basic test of the demo installation if needed
 
-=== Walkthrough guide
-How to run through the demo
+* Login to your OpenShift cluster as cluster-admin (because a number of operators will need to be installed)
+* Click on the username on the top right hand, and then click on *Copy login command*. This will open another tab and you will need to login again
+* Click on *Display token* link, and copy the command under  *Log in with this token*. This will look like this
+[source,shell script]
+----
+oc login --token=<token> --server=<server>
+----
+
+* Clone the ansible scripts as follows in an appropriate folder in your local environment
+
+[.console-input]
+[source,shell script]
+----
+git clone https://github.com/rh-solution-pattern-api-first/ansible
+----
+* Navigate to the `ansible` folder
+
+[.console-input]
+[source,shell script]
+----
+cd ansible
+----
+
+* Run the ansible playbook as shown below. This will take a few minutes to complete. Ensure that the ansible playbook is deployed without errors
+
+[.console-input]
+[source,shell script]
+----
+ansible-playbook playbook.yml
+----
+
+* This is the output you get from the above ansible command:
+
+[example]
+----
+PLAY RECAP ***********************************************************************************************************************************************************
+localhost                  : ok=117  changed=22   unreachable=0    failed=0    skipped=43   rescued=0    ignored=0   
+----
+
+That's it! You are set to try out this Solution Pattern! ｡◕‿◕｡
+
+
+== Walkthrough guide
+
+In the following sections you will follow this journey:
+
+* *Design* an API resulting in an OpenAPI schema
+* *Govern* the schema with a registry for use by various teams
+* *Mock* the APIs to enable faster inner loop development
+* *Manage and Secure* APIs to allow access for external teams
+
+== Design APIs
+
+In this section you will import an existing API that will be used as a starting point, explore the designer while making a few minor edits. You will then export this to a Service Registry in the next step.
+
+
+=== Import API 
+
+To import the OpenAPI draft into API designer, you can import the content as text OR upload as file. To keep things simple in this workshop, you will import the content by simply pasting the draft spec into the API designer.
+
+[NOTE]
+====
+In a real-world scenario you might start with an empty API specification, and define the different elements of the spec document. You would then export the spec in JSON or YAML format (by copying the contents from the source editor) to your local file system and push it to version control.
+====
+
+. The API Designer has been pre-deployed on OpenShift. Launch the API Designer by clicking on https://apicurio-designer.%SUBDOMAIN%[API Designer^, window=api_designer]
+. Click on the *New API* button.
++
+image::api-designer-import-url.png[]
+* Click on the *Source Tab* on the *New API* page, and delete the entire content in the window. 
+** Note: Keep this tab open. You will be pasting the draft OpenAPI into this window.
++
+image::api-new-api.png[]
+. Click https://raw.githubusercontent.com/cloud-services-summit-connect-2022/product-catalog-api/main/openapi/openapi-spec.yml[here^] to view the draft OpenAPI .
+. Copy the entire contents from this webpage (Ctrl+A and Ctrl+C)
+. Now paste the copied content (the draft OpenAPI) from the above step into the API designer's *Source Tab* replacing all of the existing content. Click on *Save button* as highlighted in the screenshot below.
++
+image::api-paste-api.png[]
+. Navigate back to the *Design Tab*
++
+image::api-design-tab.png[]
+
+. You can now view  the `Product Catalog API` on the browser. You can explore the Paths, Data Types and Responses that are part of this API.
++
+image::api-designer-api-import-complete.png[]
+
+=== Explore and edit the API 
+. Click on the `product-list` under the `Responses` section
+. Click on the `2 example(s) defined` link. You will see the list of examples given
++
+image::api-designer-product-list-response-eg-list.png[]
+. At the right-most side of the *Examples* table (scroll sideways), hover the mouse over the `product-list-with-inventory` example and click on the *Edit* button shown as a *pencil icon*. This opens the example's content.
++
+image::api-click-edit.png[]
+. The example's content is displayed in the popup window.
++
+image::api-designer-sample-original.png[]
+. Replace the name of the first product by adding your name. I've changed this from `Quarkus T-shirt` to `Jaya's Awesome Quarkus T-shirt`
+.. Make sure you click  on the *Edit* button to confirm your edits.
++
+image::api-designer-sample-updated.png[]
+. The changes made are now visible on the main screen. 
++
+image::api-designer-sample-edit-complete.png[]
+* The OpenAPI specification is now ready to be downloaded. Click on the _down arrow_ button adjacent to *Save As..* and then choose *Save as YAML* button found on top-right of the page. The file gets saved automatically in the *Downloads folder* of your computer.
++
+image::api-download-as-json.png[]
+* The Product Catalog OpenAPI spec is ready to be governed with a Service Registry.
+
+
+[NOTE]
+====
+With the API Designer all your designs are stored locally in your browser. Clearing your browser cache or switching to a new browser might result in loss of data. Make sure you save your work by downloading your designs locally or as described in the next step export them to a Red Hat Service Registry instance.
+====
+
+
+{empty} +
+
+You can close all the other browser tabs but this Instructions browser tab you are viewing. In the next section, you will import this API spec and govern it with Red Hat Service Registry.
+
+
+== Govern APIs
+Publish, discover, and reuse artifacts with Red Hat build of Apicurio Registry
+
+https://access.redhat.com/documentation/en-us/red_hat_build_of_apicurio_registry[Red Hat build of Apicurio Registry^, window=_blank] is a datastore for sharing standard event schemas and API designs across event-driven and API architectures. 
+
+Goals of this section
+* Import the OpenAPI Spec into Service Registry
+* Enable Content Rules to test OpenAPI format validity
+
+=== Launch Service Registry
+
+. Launch *Service Registry* by accessing https://service-registry-%USERID%.%SUBDOMAIN%/ui/[Service Registry^, window="service_registry_url"]
++
+image::sr-landing.png[]
++
+[NOTE]
+====
+Red Hat build of Apicurio Registry has been set up within OpenShift *globex-apim-%USERID%* namespace. You can access the deployment from the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-apim-%USERID%?view=graph[OpenShift Console^,role=external,window=console], and if required login with(`%USERID%/openshift`). 
+====
+. Click on the *Upload artifact* button as shown in the above screenshot. You will be presented with a *Upload Artifact* wizard 
++
+image::sr-upload-artifact.png[]
+
+. In the wizard, enter the following details, and click on the *Upload* button. 
+.. Use the exact same values as instructed below to avoid errors in the other sections of this module.
++
+- *Group*: `globex`
+- *ID of the artifact*: `ProductCatalogAPI`
+- *Artifact textarea*: Click on *Browse..* button to upload the Product Catalog OpenAPI downloaded in the previous step, or `Drag & drop` the file into the textarea.
+.. Click the *Upload* button
++
+image::sr-spec-setting.png[]
+
+. Note that the *Globex Product Catalog API Gateway* artifact has been uploaded to *Service Registry* and can be viewed on the webpage
++
+image::sr-uploaded.png[]
++
+[NOTE]
+====
+* This OpenAPI schema can be easily shared with others through the https://service-registry-%USERID%.%SUBDOMAIN%/apis/registry/v2/groups/globex/artifacts/ProductCatalogAPI[OpenAPI Schema's endpoint^].
+* This schema can be used for generating client SDK as well by clicking on the *Generate client SDK* link that can be seen in the screenshot above.
+====
+
+. Click on the *Documentation* tab to view the OpenAPI specifications 
+. Click on the *Content* tab to view the schema in JSON format
+
+=== Enabling Artifact-specific rules for format validity
+. Navigate back to the *Overview* tab.
+
+. Observe the *Artifact-specific rules* section which provides options to validate the schema and enforce compatibility while the artifact is updated.
++
+image::sr-api-content-rules.png[] 
+
+. Click on *Enable* button (highlighted in the above screenshot) for *Validity rule* and choose *Full* from the dropdown. This rule ensures that the content is valid when the artifact is updated.
++
+image::sr-content-rules.png[]
+
+. Click on the *Content* tab. Copy the entire content of the artifact shown in this tab into the memory with `Ctrl+A` and `Ctrl+C`.
++
+image::sr-view-content.png[]
+
+. Click on the *Upload new version* button on the top-right of the page, and paste the content of the schema that you copied in the previous steps into the textbox provided with `Ctrl+V`. 
++
+image::sr-upload-new-popup.png[] 
+
+. Delete the closing `}` at the bottom of the text box and click *Upload*.
++
+* The original content:
++
+image::sr-original-api-content.png[] 
+* After introducing an error:
++
+image::sr-edit-schema-with-error.png[]
+
+. You will observe an `*Invalid Content Error*` stating that one of the content rules has been violated, and displaying details of the error. The artifact's content is not updated.
++
+image::sr-error.png[]
+
+. Click on `Close` to dismiss the error.
+
+[NOTE]
+====
+In real-life, the content rules are very helpful when APIs are used to manage Service Registry schema updates. To learn more about view the https://access.redhat.com/documentation/en-us/red_hat_build_of_apicurio_registry[Product Documentation for Red Hat build of Apicurio Registry^, window=product-page]
+====
+
+Remember, this OpenAPI schema can be easily shared with others through the https://service-registry-%USERID%.%SUBDOMAIN%/apis/registry/v2/groups/globex/artifacts/ProductCatalogAPI[OpenAPI Schema's endpoint^]. 
+
+
+You can close all the other browser tabs but this Instructions browser tab you are viewing. In the next step you will explore the use of the ProductCatalogAPI specification to setup mocks.
+
+== Mock APIs
+
+=== Setting up mocks to help with parallel development
+
+Now that the OpenAPI specs are finalised, creation of API mocks will enable parallel development streams leading to rapid inner loop development. 
+
+* The various  dev teams (such as mobile dev) do not need to wait for the APIs to be completely developed and instead can use these mocks to get realistic responses. 
+* Backend developers in parallel build the backend applications APIs using modern cloud-native frameworks such as https://quarkus.io/[Quarkus^, window=product-page]. 
+
+There are a number of ways to mock APIs including microcks, postman etc. In this module, you will use Microcks which has been deployed on OpenShift already.
+
+Goals of this section
+* Import the Product Catalog API from Service Registry 
+* Test the imported API using the mock server and look for the change made to one of the examples in the API Designer
+
+
+=== Import the Product Catalog API
+
+[NOTE]
+
+Microcks has been set up in dev-mode within OpenShift globex-apim-%USERID% namespace. 
+
+
+. Launch https://microcks-globex-apim-%USERID%.%SUBDOMAIN%/[microcks^] 
++
+[NOTE]
+====
+Microcks has been setup in developer-mode without authentication only for the purpose of this workshop. You can access the deployment from the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-apim-%USERID%?view=graph[OpenShift Console^,role=external,window=console]. If required, login with your username and password (`%USERID%/openshift`). 
+====
+. Click on the *Importers* button as show in the screenshot below
++
+image::mic-landing.png[]
+. You will be presented with the *Import Jobs* page. Click *+Create* button.
++
+image:mic-create.png[] 
+. In the *Create a new Job* wizard - *Step 1: Importer Job properties*, fill in the following details as shown in the screenshot below, and click *Next>* button. +
+* *Name*: 
++
+[.console-input]
+[source,yaml]
+----
+Product Catalog
+----
+* *Repository URL*: 
++
+[.console-input]
+[source,yaml]
+----
+https://service-registry-%USERID%.%SUBDOMAIN%/apis/registry/v2/groups/globex/artifacts/ProductCatalogAPI
+----
++
+image:mic-create-job.png[] 
++
+[NOTE]
+====
+The Repository URL that you provided is the OpenAPI Schema's URL from Service Registry that you setup in the previous step. 
+====
+. Since there is no Authentication secret to be provided, click *Next >* in *Step 2 - Authentication options*
++
+image:mic-create-job-step2.png[] 
+. You can choose to provide a label in the *Labels* step. But since this is not mandatory or relevant to this exercise, you can simply choose to click *Next >* in the *Step 3 - Labels*
+image:mic-create-job-step3.png[] 
+. Click *Create* in the *Step 4 - Review* step of this wizard 
+image:mic-create-job-step4.png[] 
+. You would be able to view the Product Catalog API that you imported being listed as shown below. Take special note of the labels as highlighted. If you see an *Error* label, refer to the note shown below
++
+image:mic-import-success.png[] 
++
+[CAUTION]
+====
+image:mic-import-error.png[] 
+If there is an error in fetching the content, this could mean that you had provided a different name to the schema within Service Registry other than *ProductCatalogAPI*
+====
+. Navigate to the *APIs | Services* to view the API that has been successfully imported. Click on *Product Catalog API* link (highlighted in the screenshot below)
++
+image:mic-view-api.png[] 
+. View the details of the imported Product Catalog
+. Click on the arrow *>* against the first operation *GET /services/product/list/{ids}* to view the details of this operation. 
+** You may note that this operation holds the example that you had edited to include your name :)
++
+image:mic-view-api-details.png[] 
+. You will now be able to see the Mock URL, the response code and other details for this specific operation
+. Copy the Mock URL by clicking on the *Copy icon* shown in the Mock tab named *product-list-with-inventory*. Refer to the screenshot below.
++
+[CAUTION]
+====
+The order in which the Mocks are displayed could be different from the screenshot. So ensure you are choosing *product-list-with-inventory* and not the *product-list-without-inventory*
+====
++
+image:mic-view-api-operation1.png[] 
+
+=== Try out the mock URL
+
+. Open a new browser tab, and navigate to the Mock URL you copied in the above step.
+. You can view the list of products from the example of the Mock. Note that the name of the Quarkus T-shirt now says `Jaya's Awesome Quarkus T-shirt` (or the name you have for this product)
++
+image:mic-final-mock.png[] 
+. These mock end points of the mock server can be used by the dev teams that are dependent on the APIs, to continue development in parallel without having to wait for the backend services to be fully developed, thereby accelerating time to market.
+
+
+Go ahead and close all the other browser tabs but this Instructions browser tab you are viewing. +
+In the next step, you will learn to protect the API by using Red Hat 3scale API Management. 
+
+
+== Manage and Secure APIs
+
+=== Introduction
+
+Once the backend teams fully develop the APIs backends, the APIs can be published for external consumption with an API management platform. Globex uses https://www.redhat.com/en/technologies/jboss-middleware/3scale[Red Hat 3scale API Management,role=external,window=product_page] for managing these APIs. The external teams such as the mobile team will be able to use the built-in developer portal of 3scale to sign up for various application plans. 
+
+In this section you will 
+
+* Launch the 3scale tenant which has been created for you
+* Manage and secure the predeployed Product Catalog API with 3scale
+* Test secure access of the Product Catalog API
+* View the traffic analytics generated
+
+=== Access 3scale
+. Navigate to https://3scale-%USERID%-admin.%SUBDOMAIN%[3scale^,window=3scale] to launch the 3scale tenant created for you.
+. Login with your username and password (`%USERID%/openshift`)
++
+image:3scale-login.png[] 
+. Notice than a sample API which has been already set up. You will not be using this but will be creating a new one for this workshop for the *Product Catalog API* that you've been working on so far.
++
+image:3scale-landing-page.png[]
+
+
+[#3scale-definitions-guide]
+=== Create Mobile Gateway Backend, Product and ActiveDoc on 3scale
+
+To integrate and manage the Product Catalog API in 3scale, you need to create Products and Backend. 
+
+In this lab you will declare the 3scale assets like Product and Backend as Kubernetes Custom Resources. The Custom Resources are detected by the 3scale operator which applies and synchronizes the Custom Resources (CRDs) on the 3scale platform.
+
+Note: <<#3scale-definitions, Click to learn more about Backends, Products, ActiveDocs and CRDs>>
+
+[#create-backend]
+==== Create 3scale Backend
+
+To create the Backend for Product Catalog API Gateway, you will need the Service URL of Product Catalog deployment which is already running on OpenShift. +
+
+Note: <<#openshift-service, Click to learn more about OpenShift/Kubernetes Service and how to find it>>
+
+. Navigate to the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-apim-%USERID%?view=graph[OpenShift Console^,role=external,window=console]. If required, login with your username and password (`%USERID%/openshift`). Open the *Developer* perspective in the *globex-apim-%USERID%* 
+. On the OpenShift console, click on the image:console-import-yaml.png[] icon in the top menu on the right. This opens an editor where you can enter a Kubernetes resource definition in YAML format.
++
+image:apim-openshift-import.png[]
++
+.. Paste the following *Backend* 3scale Custom Resource in the editor.
++
+[.console-input]
+[source,yaml]
+----
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Backend
+metadata:
+  name: globex-product-catalog-backend
+  namespace: globex-apim-%USERID%
+spec:
+  name: "Globex Product Catalog Backend"
+  systemName: "globex-product-catalog-backend"
+  privateBaseURL: "http://catalog.globex-%USERID%.svc.cluster.local:8080"
+  providerAccountRef:
+    name: 3scale-tenant-secret
+  metrics:
+    hits:
+      description: Number of API hits
+      friendlyName: Hits
+      unit: "hit"
+  mappingRules:
+    - httpMethod: GET
+      pattern: "/"
+      increment: 1
+      metricMethodRef: hits
+
+----
++
+image:apim-create-backend-cr.png[] 
++
+.. Click *Create* to create the 3scale Backend resource. The 3scale operator creates the Backend resource in your 3scale tenant. 
+.. You are shown the *Backend details* page. Note under the *Conditions* section at the bottom of the page, the Type *Synced* is set with Status as *True*
++
+image:apim-create-backend-details.png[] 
+. Click on https://3scale-%USERID%-admin.%SUBDOMAIN%[3scale^,window=3scale] to view the backend created for you.
++
+image:apim-backend-created.png[] 
++
+.. Click on the Backend *Globex Product Catalog Backend* link to view the Backend overview page.
++
+image:apim-backend-overview.png[] 
+
+
+---
+
+[#3scale-product]
+==== Create 3scale Product and ActiveDocs
+The next step is to create a 3scale Product, Application Plans for the Product, and also ActiveDocs for the Product Catalog API
+
+. Navigate to the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-%USERID%?view=graph[OpenShift Console^,role=external,window=console]. 
+. On the OpenShift console, click on the image:console-import-yaml.png[] icon in the top menu on the right. This opens an editor where you can enter a Kubernetes resource definition in YAML format.
+.. Paste the following *Product and ActiveDoc* 3scale Custom Resource in the editor.
++
+[.console-input]
+[source,yaml]
+----
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Product
+metadata:
+  name: globex-product-catalog-product
+  namespace: globex-apim-%USERID%
+spec:
+  name: "Globex Product Catalog"
+  systemName: "globex-product-catalog-product"
+  providerAccountRef:
+    name: 3scale-tenant-secret
+  applicationPlans:
+    basic:
+      name: "Globex Catalog Basic Plan"
+      setupFee: "0"
+      published: true
+    premium:
+      name: "Globex Catalog Premium Plan"
+      setupFee: "100"
+      published: true
+  backendUsages:
+    globex-product-catalog-backend:
+      path: /
+
+---
+kind: ActiveDoc
+apiVersion: capabilities.3scale.net/v1beta1
+metadata:
+  name: globex-product-catalog-activedoc
+  namespace: globex-apim-%USERID%
+spec:
+  activeDocOpenAPIRef:
+    url: "https://service-registry-%USERID%.%SUBDOMAIN%/apis/registry/v2/groups/globex/artifacts/ProductCatalogAPI"
+  published: true
+  name: globex-product-catalog-activedoc
+  providerAccountRef:
+    name: 3scale-tenant-secret
+  productSystemName: globex-product-catalog-product
+    
+----
++
+image:apim-prod-activedoc-cr.png[] 
+.. Click *Create* to create the 3scale resources, and the 3scale operator creates these resources in your 3scale tenant
++
+image:apim-prod-activedoc-created.png[]
+. Click on https://3scale-%USERID%-admin.%SUBDOMAIN%[3scale^,window=3scale] to view the Product and ActiveDoc created for you
++
+image:apim-prod-created.png[] 
+. Click on the Product *Globex Product Catalog* link to view the overview page. Note that the *Backends* and the *Published Application Plans* that you created have been attached to the Product.
++
+image:apim-prod-overview.png[] 
+
++
+. Click on *ActiveDocs* link on the left hand navigation
++
+image:apim-prod-activedocs.png[] 
++
+.. Click on the *globex-product-catalog-activedoc* ActiveDoc to view the API
++
+image:apim-activedoc-view.png[]
+
+[#apicast-guide]
+. Before you can start accessing the Product Catalog API, you must promote the APIcast configuration as below. +
++
+Note: <<#apicast, Click to learn more about APIcast>>
+
+. From https://3scale-%USERID%-admin.%SUBDOMAIN%[3scale homepage^,window=3scale], under the Products section, click on *Globex Product Catalog* to view the Product's overview page.
+. From the left hand menu, navigate to *Integration* > *Configuration*
++
+image:apim-prod-integ-config.png[]
+. Under *APIcast Configuration*, click *Promote to v.x Staging APICast* to promote the APIcast configurations.
++
+image::apim-promote-staging.png[]
+. Similarly click *Promote to v.x Production APICast* 
++
+image::apim-promote-prod.png[]
+
+
+=== Create an Application for the default account
+
+. Navigate to https://3scale-%USERID%-admin.apps.cluster-vxhmd.sandbox1011.opentlc.com/buyers/accounts[Audience section^, window=3scale] of 3scale from the the top menu bar
++
+image:apim-audeince-menu.png[] 
+. You will be shown the *Accounts > Listing* page showing a default *Developer* account that has already been created.
++
+image:apim-developer-account.png[]
+. Click on *Developer* to view the Developer Account details. 
+.. Click on the *+++<u>1 Application</u>+++* link on the top of the page
++
+image:apim-dev-acc-details.png[]
+. The existing list of applications associated with this Developer user is displayed. 
+.. Note that there is already a default application which has been associated with this user. 
+.. Click *Create Application* button
++
+image:apim-create-app.png[]
+. Choose/Enter the following details in the *Create Application* page:
+* Product
++
+[.console-input]
+[source,yaml]
+----
+Globex Product Catalog
+----
+* Application plan
++
+[.console-input]
+[source,yaml]
+----
+Globex Catalog Basic Plan
+----
+* Name
++
+[.console-input]
+[source,yaml]
+----
+product-catalog-basic
+----
+* Description
++
+[.console-input]
+[source,yaml]
+----
+Globex Product Catalog - Basic App
+----
+
++
+image:apim-new-app-data.png[]
+. Click the *Create Application* button.
+. You can see the *product-catalog-basic* application details now as shown below.
++
+image:apim-create-app-success.png[]
+. Make a note of the `User Key` that is displayed under the *API Credentials* section as highlighted in the above screenshot. This will be used while making calls to the API.
+
+[NOTE]
+======
+Note: In real life, developers will create Applications from the integrated 3scale Developer Portal.
+======
+
+{empty}
+
+---
+
+=== Test Product Catalog API Access
+
+To test the secure access of this API, you will use a simple Angular application which reads from the Product Catalog API endpoint and displays it on the browser.
+
+. Navigate to the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-apim-%USERID%?view=graph[OpenShift Console,role=external,window=console] to access the *globex-apim-%USERID%* namespace in it.
+. Click on the *Open URL* icon highlighted in the screenshot below to view the Angular mobile application.
++
+image:apim-launch-mobile.png[]
+. You will see an empty page because the application is not configured to talk to the Product Catalog API yet. In the next steps you will configure the app to connect with the Product Catalog API.
++
+image:apim-mobile-empty.png[]
+. From the OpenShift console that you have already opened, click on *globex-mobile* as highlighted below to view the *Deployment* details.
++
+image:apim-namespace.png[]
+. In the deployment panel, click on the Deployment *globex-mobile* to navigate to the Deployment details page.
++
+image:apim-mobile-deployment-panel.png[]
+. Click on the *Environment* tab from the Deployment details page.
++
+image:apim-mobile-deployment-details.png[]
+. Note that there are two variables with values `replace-me`. You will need to update these variables which will need to be fetched from 3scale. +
+. Update the 2 placeholders as instructed below
++
+image:apim-mobile-env.png[]
+. *GLOBEX_PRODUCT_CATALOG_API*: We will use the Staging APICast URL of the *Globex Product Catalog* created in 3scale. 
+* Launch https://3scale-%USERID%-admin.%SUBDOMAIN%[3scale Dashboard^,window=3scale], and click on *Globex Product Catalog* link to view the Product Details
+* Next navigate to *Integration > Configuration* from the left hand navigation, and copy the URL show under *Staging APIcast* section
++
+image:apim-staging-url.png[]
++
+* Paste the URL copied in the above step into the globex-mobile Deployment's Environment variable *GLOBEX_PRODUCT_CATALOG_API*
++
+image:apim-staging-url-pasted.png[]
+. *USER_KEY*: This is the API Credentials that you were provided when you signed up for an Application Plan
+** Click https://3scale-%USERID%-admin.%SUBDOMAIN%/p/admin/applications[Applications^,window=3scale] to view the list *Applications for Developer* account, and click on *product-catalog-basic* application.
++
+image:apim-developer-applications.png[]
+** Copy the *User Key* as show in this page
++
+image:apim-user-key-var.png[]
+** Paste this into the Deployment Environment variable *USER_KEY*
++
+image:apim-user-key-pasted.png[]
+. The globex-mobile Deployment's Environment values should look similar to this. Click on *Save* button at the bottom of the page. 
++
+image:apim-mobile-env-complete.png[]
+
+. A new pod will be automatically created with the new endpoint and user_key, and the application is ready to be tested. 
+.. Click on the Pod tab to view the creation of a new pod. You will need to be quick or you may miss the pod creation :)
++
+image:apim-mobile-new-pod.png[]
+. Launch https://globex-mobile-globex-apim-%USERID%.%SUBDOMAIN%[Globex Mobile^,window=mobile] to view the products in a browser. It may take a couple of seconds for the data to load.
++
+image:apim-mobile-browser-view.png[]
+
+
+=== View Traffic Analytics
+. Refresh the https://globex-mobile-globex-apim-%USERID%.%SUBDOMAIN%[Globex Mobile^,window=mobile] page a few times to generate traffic.
+. Navigate to https://3scale-%USERID%-admin.%SUBDOMAIN%[3scale Dashboard^,window=3scale], and click on *globex-product-catalog-product* to view the Product Details
+. Click on the *Analytics -> Traffic* link on the left hand side menu. You will see the *Hits* details. 
+. This section provides insights in terms of the number of hits for the product and other traffic analysis details as well.
++
+image:apim-traffic.png[]
+ 
+
+== Summary
+
+Congratulations! You have reached the end of the *Manage and secure APIs with OpenShift API Management* module of this workshop. You learnt about the various aspects of API Lifecycle management using a gamut of technologies including Red Hat build of Apicurio Registry, Red Hat 3scale API Management, Apicurio design and Microcks. 
+
+To learn more about click https://developers.redhat.com/topics/api-management[API Management, window=_blank]
+
+
+== Appendix: Learn More
+
+[#3scale-definitions]
+=== What are Backend, Product, ActiveDocs and CRDs?
+
+
+* *Backends* are Internal APIs which are then bundled into a 3scale Product. It contains at least the URL of the API. It can optionally be configured with mapping rules, methods and metrics to facilitate reusability.
+* *Products* are the Customer-facing APIs. It defines the application plans, and configure APIcast
+* *ActiveDocs* are interactive documentation for your API offered as a framework by 3scale. You can create API documentation by attaching the Product Catalog OpenAPI schema as a *3scale ActiveDoc*
+* A CRD file allows you to define your own object kinds (Backend, API, ActiveDoc etc) and lets the API Server handle the entire lifecycle of the objects.
+
+<< <<#3scale-definitions-guide, back to instructions>>
+
+{empty}
+
+
+[#openshift-service]
+=== What is a OpenShift/Kubernetes Service?
+
+In OpenShift, a Kubernetes Service serves as an internal load balancer and identifies pods which in turn have the applications. If the application needs to be accessed from outside of OpenShift, you will need OpenShift routes. +
+In this workshop, since both 3scale and the Product Catalog API run on OpenShift, 3scale will proxy requests to the backend using Services. This also means the backend cannot be accessed directly from outside OpenShift. 
+
+*Finding the Private endpoint of the Product Catalog service deployed on OpenShift*
+
+* In a browser window, navigate to the console of the lab OpenShift cluster at link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-%USERID%?view=graph[Topology view^,role=external,window=_blank]. 
+
+
+* Login with your username and password (`%USERID%/openshift`). Open the *Developer* perspective in the *globex-%USERID%* namespace.
+* Click on the `*catalog icon*` to see the deployment details appear on the right-hand. Under the *Resources* tab, click on *catalog* Service as indicated in the screenshot above.
++
+image::apim-catalog-service.png[]
+* You will be navigated to the Service Details page of the *catalog* service. Copy the *Hostname* highlighted in the screenshot below
++
+image::apim-catalog-service-details.png[]
++
+This would look something like this: `catalog.globex-%USERID%.svc.cluster.local`
+* This hostname is used as the *Private endpoint* while creating the Backend.
+
+<< <<#create-backend, back to instructions>>
+
+---
+
+[#apicast]
+=== What is APIcast?
+
+APIcast is an NGINX based API gateway used to integrate your internal and external API services with the Red Hat 3scale Platform. In this workshop we use the two built-in APICast (staging and production) that come by default with the 3scale installation. They come pre-configured and ready to use out-of-the-box. +
+
+<< <<#apicast-guide, back to instructions>>

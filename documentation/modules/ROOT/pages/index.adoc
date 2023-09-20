@@ -4,17 +4,30 @@
 :sectlinks:
 :doctype: book
 
-A brief introduction of this solution pattern.
+
+In this solution pattern you will discover how an API First Approach provides the right framework to build microservices and APIs based systems. The stages of an API life cycle cover both the implementation life cycle and the management life cycle.
+
+* The *Implementation* phase allows you to collaboratively design an API before determining and developing the various channels and applications that will use the API. The design-first approach advocates for designing the API's contract before writing any code.
+* The *Management* phase allows you to manage access to the implement APIs, measure consumption and also track utilization of the APIs to perhaps even monetize the APIs
 
 include::content-overview.adoc[]
 
 [#use-cases]
 == Use cases
 
-Common use cases that can be address with this architecture are:
+Use cases that can be addressed with this solution pattern:
 
-- xyz
-- xyz
+* Modernize legacy systems: Run legacy and new systems within the same platform. By adding API access to legacy systems, teams can build microservices-based applications while also using existing APIs, applications, and systems.
+* Make APIs discoverable: Use APIs to connect microservices, systems, and applications so developers across the organization can easily access them through a consistent interface. This creates a sandbox where developers can test and deploy workloads.
+* Join the API economy: Expand your API library and share your APIs with developers and partners outside of your organization. Monetize the services that were built for internal use and increase revenue streams by sharing them with a larger ecosystem
+
+A good API Management platform should allow the API teams to:
+
+* Deploy, monitor, and control APIs throughout their entire life cycle
+* Create policies governing security and usage
+* Use existing identity management systems through a declarative policy without requiring custom code
+* Gain insight into health and use of APIs
+* Discover and share APIs by publishing to internal or external developer portals
 
 include::01-pattern.adoc[]
 

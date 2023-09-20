@@ -1,4 +1,4 @@
-= Solution Pattern: Name Template
+= Solution Pattern: API First Approach
 :sectnums:
 :sectlinks:
 :doctype: book
