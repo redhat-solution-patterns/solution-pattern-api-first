@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Untitled :: Solution Patterns for Cloud Native Architectures</title>
+    <title>Untitled :: API-first approach for cloud native apps</title>
     <link rel="canonical" href="https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-template/content-overview.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
@@ -16,7 +16,7 @@
     <div class="navbar-brand">
       <a class="navbar-item" href="https://redhat.com" target="_blank"><img
           src="../_/img/logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"></a>
-      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-solution-patterns.github.io/solution-patterns">Solution Patterns for Cloud Native Architectures</a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-solution-patterns.github.io/solution-patterns">API-first approach for cloud native apps</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -57,7 +57,7 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="index.html" class=" query-params-link">Template Tutorial</a></h3>
+    <h3 class="title"><a href="index.html" class=" query-params-link">API-first approach</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -93,7 +93,7 @@
     <a class="nav-link" href="02-architecture.html#in_depth">2.2. An in-depth look at the solution&#8217;s architecture</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-architecture.html#tech_stack">2.3. More about the technology stack</a>
+    <a class="nav-link" href="02-architecture.html#more_tech">2.3. More about the technology stack</a>
   </li>
 </ul>
   </li>
@@ -102,48 +102,15 @@
     <a class="nav-link" href="03-demo.html">3. See the Solution in Action</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="03-demo.html#_demonstration">3.1. Demonstration</a>
+    <a class="nav-link" href="03-demo.html#_setup_the_solution">3.1. Setup the solution</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="03-demo.html#_run_the_demonstration">3.2. Run this demonstration</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_before_getting_started">3.3. Pre-requisites</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_installing_the_demo">3.4. Installing the demo</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_walkthrough_guide">3.5. Walkthrough guide</a>
-  </li>
-</ul>
+    <a class="nav-link" href="03-demo.html#_walkthrough_guide">3.2. Walkthrough guide</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="04-workshop.html">4. Workshop</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="04-workshop.html#_installing_the_workshop_environment">4.1. Installing the workshop environment</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <span class="nav-text">xref:04-workshop.adoc#_before_getting_started[4.2. Pre-requisites</span>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="04-workshop.html#install_wksp_details">4.3. Installing the environment</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="04-workshop.html#deliver_wksp">4.4. Delivering the workshop</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">5. Other Red Hat Solution Patterns</a>
+    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">4. Other Red Hat Solution Patterns</a>
   </li>
 </ul>
   </li>
@@ -152,12 +119,12 @@
 </div>
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
-    <span class="title">Template Tutorial</span>
+    <span class="title">API-first approach</span>
     <span class="version">master</span>
   </div>
   <ul class="components">
     <li class="component is-current">
-      <span class="title">Template Tutorial</span>
+      <span class="title">API-first approach</span>
       <ul class="versions">
         <li class="version is-current">
           <a href="index.html">master</a>
@@ -172,7 +139,6 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
 </nav>
   <div class="edit-this-page"><a href="https://github.com/redhat-solution-patterns/solution-pattern-api-first/edit/main/documentation/modules/ROOT/pages/content-overview.adoc">Edit this Page</a></div>
@@ -193,10 +159,7 @@
 <p><a id="tabset1_a-href-03-demo-html-class-xref-page-3-demonstration-a"></a><a href="03-demo.html" class="xref page">3. Demonstration</a></p>
 </li>
 <li>
-<p><a id="tabset1_a-href-04-workshop-html-class-xref-page-4-workshop-a"></a><a href="04-workshop.html" class="xref page">4. Workshop</a></p>
-</li>
-<li>
-<p><a id="tabset1_a-href-5-developer-resources-a"></a><a href="#">5. Developer Resources</a></p>
+<p><a id="tabset1_a-href-4-developer-resources-a"></a><a href="#">4. Developer Resources</a></p>
 </li>
 </ul>
 </div>
@@ -204,11 +167,10 @@
 <div class="tab-pane" aria-labelledby="tabset1_a-href-index-html-class-xref-page-1-solution-pattern-a">
 <div class="paragraph">
 <p><a href="index.html#use-cases" class="xref page">1. Use cases</a><br>
-<a href="01-pattern.html#_the_story_behind_this_solution_pattern" class="xref page">2. The story behind this solution pattern</a><br>
-<a href="index.html#use-cases" class="xref page">3. Use cases</a><br>
-<a href="01-pattern.html#_the_solution" class="xref page">4. The solution</a><br>
-<a href="index.html#content_overview" class="xref page">5. Content overview</a><br>
-<a href="index.html#_explore_more_solution_patterns" class="xref page">6. Explore more solution patterns</a></p>
+<a href="index.html#story" class="xref page">2. The story behind this solution pattern</a><br>
+<a href="index.html#soolution" class="xref page">3. The solution</a><br>
+<a href="index.html#content_overview" class="xref page">4. Content overview</a><br>
+<a href="index.html#_explore_more_solution_patterns" class="xref page">5. Explore more solution patterns</a></p>
 </div>
 </div>
 <div class="tab-pane" aria-labelledby="tabset1_a-href-02-architecture-html-class-xref-page-2-architecture-a">
@@ -225,17 +187,25 @@
 <a href="03-demo.html#_walkthrough_guide" class="xref page">2. Walkthrough guide</a></p>
 </div>
 </div>
-<div class="tab-pane" aria-labelledby="tabset1_a-href-04-workshop-html-class-xref-page-4-workshop-a">
-<div class="paragraph">
-<p><a href="04-workshop.html#_installing_the_workshop_environment" class="xref page">1. Installing the workshop environment</a><br>
-<a href="04-workshop.html#_delivering_the_workshop" class="xref page">2. Delivering the workshop</a></p>
-</div>
-</div>
-<div class="tab-pane" aria-labelledby="tabset1_a-href-5-developer-resources-a">
-<div class="paragraph">
-<p><a href="https://developers.redhat.com/about" target="_blank" rel="noopener">1. Register</a> for Red Hat developers subscription to get access to Red Hat products for personal use at no cost<br>
-<a href="https://developers.redhat.com/products/openshift/overview" target="_blank" rel="noopener">2. Red Hat OpenShift</a><br>
-<a href="https://developers.redhat.com/products/quarkus/overview" target="_blank" rel="noopener">3. Quarkus</a><br></p>
+<div class="tab-pane" aria-labelledby="tabset1_a-href-4-developer-resources-a">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://developers.redhat.com/about" target="_blank" rel="noopener"> Register</a> for Red Hat developers subscription to get access to Red Hat products for personal use at no cost<br></p>
+</li>
+<li>
+<p><a href="https://developers.redhat.com/products/3scale/overview" target="_blank" rel="noopener">Red Hat 3scale API Management</a></p>
+</li>
+<li>
+<p><a href="https://access.redhat.com/documentation/en-us/red_hat_build_of_apicurio_registry" target="_blank" rel="noopener">Red Hat build of Apicurio Registry</a></p>
+</li>
+<li>
+<p><a href="https://developers.redhat.com/products/quarkus/overview" target="_blank" rel="noopener">Red Hat build of Quarkus</a></p>
+</li>
+<li>
+<p><a href="https://developers.redhat.com/products/openshift/overview" target="_blank" rel="noopener">Red Hat OpenShift</a><br></p>
+</li>
+</ul>
 </div>
 </div>
 </div>

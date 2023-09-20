@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Untitled :: Solution Patterns for Cloud Native Architectures</title>
+    <title>Untitled :: API-first approach for cloud native apps</title>
     <link rel="canonical" href="https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-template/01-pattern.html">
     <link rel="prev" href="index.html">
     <link rel="next" href="index.html#_content_overview">
@@ -18,7 +18,7 @@
     <div class="navbar-brand">
       <a class="navbar-item" href="https://redhat.com" target="_blank"><img
           src="../_/img/logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"></a>
-      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-solution-patterns.github.io/solution-patterns">Solution Patterns for Cloud Native Architectures</a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-solution-patterns.github.io/solution-patterns">API-first approach for cloud native apps</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -59,7 +59,7 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="index.html" class=" query-params-link">Template Tutorial</a></h3>
+    <h3 class="title"><a href="index.html" class=" query-params-link">API-first approach</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -95,7 +95,7 @@
     <a class="nav-link" href="02-architecture.html#in_depth">2.2. An in-depth look at the solution&#8217;s architecture</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-architecture.html#tech_stack">2.3. More about the technology stack</a>
+    <a class="nav-link" href="02-architecture.html#more_tech">2.3. More about the technology stack</a>
   </li>
 </ul>
   </li>
@@ -104,48 +104,15 @@
     <a class="nav-link" href="03-demo.html">3. See the Solution in Action</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="03-demo.html#_demonstration">3.1. Demonstration</a>
+    <a class="nav-link" href="03-demo.html#_setup_the_solution">3.1. Setup the solution</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="03-demo.html#_run_the_demonstration">3.2. Run this demonstration</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_before_getting_started">3.3. Pre-requisites</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_installing_the_demo">3.4. Installing the demo</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_walkthrough_guide">3.5. Walkthrough guide</a>
-  </li>
-</ul>
+    <a class="nav-link" href="03-demo.html#_walkthrough_guide">3.2. Walkthrough guide</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="04-workshop.html">4. Workshop</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="04-workshop.html#_installing_the_workshop_environment">4.1. Installing the workshop environment</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <span class="nav-text">xref:04-workshop.adoc#_before_getting_started[4.2. Pre-requisites</span>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="04-workshop.html#install_wksp_details">4.3. Installing the environment</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="04-workshop.html#deliver_wksp">4.4. Delivering the workshop</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">5. Other Red Hat Solution Patterns</a>
+    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">4. Other Red Hat Solution Patterns</a>
   </li>
 </ul>
   </li>
@@ -154,12 +121,12 @@
 </div>
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
-    <span class="title">Template Tutorial</span>
+    <span class="title">API-first approach</span>
     <span class="version">master</span>
   </div>
   <ul class="components">
     <li class="component is-current">
-      <span class="title">Template Tutorial</span>
+      <span class="title">API-first approach</span>
       <ul class="versions">
         <li class="version is-current">
           <a href="index.html">master</a>
@@ -174,10 +141,9 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
-    <li><a href="index.html">Template Tutorial</a></li>
+    <li><a href="index.html">API-first approach</a></li>
     <li><a href="index.html">1. Home page</a></li>
     <li><a href="#_the_story_behind_this_solution_pattern">1.2 The story behind this solution pattern</a></li>
   </ul>
@@ -187,18 +153,52 @@
   <div class="content">
 <article class="doc">
 <div class="sect1">
-<h2 id="_the_story_behind_this_solution_pattern"><a class="anchor" href="#_the_story_behind_this_solution_pattern"></a>The story behind this solution pattern</h2>
+<h2 id="story"><a class="anchor" href="#story"></a>The story behind this solution pattern</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A description of the story that was used to build the demo and architectures of this SP.</p>
+<p>Globex is a fictitious retail company. The company recently started a digital transformation and cloud adoption journey. As part of this initiative, the development and devops teams have completed the modernization of the existing multi-tier monolithic retail e-commerce web application. The monolithic application was split in a couple of loosely-coupled microservices and the application was re-hosted on OpenShift.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/globex-phase1.png" alt="globex phase1" width="60%">
+</div>
+</div>
+<div class="paragraph">
+<p>As a next step Globex would like to expand business with a <strong>multi-channel retailing strategy</strong> through a mobile app and partner channels. This means that the new channels will need access to their core backend API services.</p>
+</div>
+<div class="paragraph">
+<p>To secure the access to Globex&#8217;s core APIs that will be used by the new channels, an API Management platform is needed. To build a holistic API Management solution, the team decides to adopt an <strong>API First approach</strong> spanning design, governance, mock and management of APIs - which will enable rapid development across teams.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_the_solution"><a class="anchor" href="#_the_solution"></a>The Solution</h2>
+<h2 id="solution"><a class="anchor" href="#solution"></a>The Solution</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This is a summary of the solution</p>
+<p>The dev team decides to introduce an API Management solution  to expose, secure and manage the APIs to the application backend services. This allows to introduce new channels (mobile application, B2B transactions) in a controlled way.</p>
+</div>
+<div class="paragraph">
+<p>Using a contract-first approach, the APIs are specified in a OpenAPI spec document and managed in a registry (Red Hat Openshift Service Registry). Once implemented, they are onboarded on the API management platform.
+Mocking of the APIs allows parallel streams of development between API implementers and API consumers.</p>
+</div>
+<div class="paragraph">
+<p>In this pattern you will follow this journey:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Design</strong> an API resulting in an OpenAPI schema</p>
+</li>
+<li>
+<p><strong>Govern</strong> the schema with a registry for use by various teams</p>
+</li>
+<li>
+<p><strong>Mock</strong> the APIs to enable faster inner loop development</p>
+</li>
+<li>
+<p><strong>Manage and Secure</strong> APIs to allow access for external teams</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
