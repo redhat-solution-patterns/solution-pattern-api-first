@@ -13,7 +13,7 @@ content:
       start_path: documentation
 asciidoc:
   attributes:
-    title: API-first approach for cloud native apps (Dev Mode)
+    title: Manage and Secure APIs with an API First Approach (Dev Mode)
   extensions:
     - ./lib/remote-include-processor.js
     - ./lib/tab-block.js

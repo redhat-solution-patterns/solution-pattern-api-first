@@ -2,7 +2,7 @@ runtime:
   cache_dir: ./.cache/antora
 
 site:
-  title: API-first approach for cloud native apps 
+  title: Manage and Secure APIs with an API First Approach
   url: https://redhat-solution-patterns.github.io/solution-patterns/
   start_page: api-first::index.adoc
 
