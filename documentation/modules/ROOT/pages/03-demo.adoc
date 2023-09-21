@@ -97,6 +97,25 @@ In the following sections you will follow this journey:
 * *Mock* the APIs to enable faster inner loop development
 * *Manage and Secure* APIs to allow access for external teams
 
+=== Personalize this instructions
+
+To personalize the rest of the instructions to your OpenShift enviroment, 
+
+* At the top-right of this page enter 
+** *username* as `user1` 
+**  *subdomain* to match your OpenShift cluster under the *Your Workshop Environment* section 
+* Press enter or click on the Set button
++
+image::setup-instructions.png[]
+* The menubar and the rest of this walkthrough guide will be updated with the username and subdomain as shown below
++
+image::setup-instructions-complete.png[]
+
+[NOTE]
+=====
+The subdomain would look something like this `apps.cluster-name.guid.subdomain.myopenshift.com`
+=====
+
 == Design APIs
 
 In this section you will import an existing API that will be used as a starting point, explore the designer while making a few minor edits. You will then export this to a Service Registry in the next step.
