@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Solution Pattern: Manage and Secure APIs with an API First Approach :: Manage and Secure APIs with an API First Approach</title>
+    <link rel="canonical" href="https://redhat-solution-patterns.github.io/solution-patterns/api-first/03-demo.html">
+    <link rel="prev" href="02-architecture.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://redhat.com" target="_blank"><img
+          src="../_/img/logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-solution-patterns.github.io/solution-patterns">Manage and Secure APIs with an API First Approach</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+
+       
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Solution Patterns</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Adopt Change Data Capture for <br/>stack modernization</a>
+            <a class="navbar-item" href="#">Edge-to-Cloud Pipelines</a>     <a class="navbar-item" href="#">Event driven architecture</a>
+          </div>
+        </div>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Other</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-gitops-patterns.io/">GitOps Solution Patterns</a>
+            <a class="navbar-item" href="https://hybrid-cloud-patterns.io/">Hybrid Cloud Solution Patterns</a>
+          </div>
+        </div>
+
+        <a class="navbar-item" target="_blank" href="https://www.redhat.com/en/products/middleware">Red Hat Application Services</a>
+
+        <a class="navbar-item" target="_blank" href="https://developers.redhat.com/middleware">Learn more</a>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="api-first" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">API-first approach</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">1. Home page</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#use-cases">1.1 Use cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-pattern.html#_the_story_behind_this_solution_pattern">1.2 The story behind this solution pattern</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-pattern.html#_the_solution">1.3 The solution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_content_overview">1.4 Content Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_content_overview">1.5 Explore more solution patterns</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-architecture.html">2. Architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#tech_stack">2.1. Technology stack</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#in_depth">2.2. An in-depth look at the solution&#8217;s architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#more_tech">2.3. More about the technology stack</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-demo.html">3. See the Solution in Action</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_setup_the_solution">3.1. Setup the solution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_walkthrough_guide">3.2. Walkthrough guide</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">4. Other Red Hat Solution Patterns</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">API-first approach</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">API-first approach</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">API-first approach</a></li>
+    <li><a href="03-demo.html">3. See the Solution in Action</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/redhat-solution-patterns/solution-pattern-api-first/edit/main/documentation/modules/ROOT/pages/03-demo.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Solution Pattern: Manage and Secure APIs with an API First Approach</h1>
+<h1 id="_see_the_solution_in_action" class="sect0"><a class="anchor" href="#_see_the_solution_in_action"></a><a class="link" href="#_see_the_solution_in_action">See the Solution in Action</a></h1>
+<div class="sect1">
+<h2 id="_setup_the_solution"><a class="anchor" href="#_setup_the_solution"></a><a class="link" href="#_setup_the_solution">1. Setup the solution</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To provision the demo you will perform the following steps - each of which are explained in detail in the next sections:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Gain access to Red Hat OpenShift. This solution pattern has been tested on <a href="https://docs.openshift.com/container-platform/4.13/welcome/index.html" target="_blank" rel="noopener">OpenShift 4.13</a></p>
+</li>
+<li>
+<p>Ensure you have the tools <code>oc</code> and <code>ansible</code> installed in your local environment such as your laptop</p>
+</li>
+<li>
+<p>Access the OpenShift cluster with cluster-admin privileges</p>
+</li>
+<li>
+<p>Log in to OpenShift with <code>cluster-admin</code> role via cli</p>
+</li>
+<li>
+<p>Run the Ansible playbook</p>
+</li>
+<li>
+<p>Run a  bunch of scripts to deploy the Solution Pattern in your OpenShift cluster</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_pre_requisites"><a class="anchor" href="#_pre_requisites"></a><a class="link" href="#_pre_requisites">1.1. Pre-requisites</a></h3>
+<div class="paragraph">
+<p>Here is the list of tools you need in your local enviroment so that you can use the automated installation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/4.13/cli_reference/openshift_cli/getting-started-cli.html" target="_blank" rel="noopener">OpenShift CLI (oc client)</a></p>
+</li>
+<li>
+<p><a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html" target="_blank" rel="noopener">Ansible CLI </a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.ansible.com/ansible/latest/collections/kubernetes/core/k8s_module.html" target="_blank" rel="noopener">Ansible kubernetes.core module</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To check if you have the cli tools, you can open your terminal and use following commands:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc version #openshift cli client
+ansible --version
+ansible-galaxy --version
+ansible-galaxy collection list #the list should include kubernetes.core</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you can&#8217;t see <code>kubernetes.core</code> collection listed, you can install it with <code>ansible-galaxy</code>:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">ansible-galaxy collection install kubernetes.core</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_the_demo"><a class="anchor" href="#_installing_the_demo"></a><a class="link" href="#_installing_the_demo">1.2. Installing the demo</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Login to your OpenShift cluster as cluster-admin (because a number of operators will need to be installed)</p>
+</li>
+<li>
+<p>Click on the username on the top right hand, and then click on <strong>Copy login command</strong>. This will open another tab and you will need to login again</p>
+</li>
+<li>
+<p>Click on <strong>Display token</strong> link, and copy the command under  <strong>Log in with this token</strong>. This will look like this</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>oc login --token=&lt;token&gt; --server=&lt;server&gt;</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Clone the ansible scripts as follows in an appropriate folder in your local environment</p>
+</li>
+</ul>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">git clone https://github.com/rh-solution-pattern-api-first/ansible</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Navigate to the <code>ansible</code> folder</p>
+</li>
+</ul>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">cd ansible</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Run the ansible playbook as shown below. This will take a few minutes to complete. Ensure that the ansible playbook is deployed without errors</p>
+</li>
+</ul>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">ansible-playbook playbook.yml</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>This is the output you get from the above ansible command:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>PLAY RECAP ***********************************************************************************************************************************************************
+localhost                  : ok=117  changed=22   unreachable=0    failed=0    skipped=43   rescued=0    ignored=0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That&#8217;s it! You are set to try out this Solution Pattern! ｡◕‿◕｡</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_walkthrough_guide"><a class="anchor" href="#_walkthrough_guide"></a><a class="link" href="#_walkthrough_guide">2. Walkthrough guide</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the following sections you will follow this journey:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Design</strong> an API resulting in an OpenAPI schema</p>
+</li>
+<li>
+<p><strong>Govern</strong> the schema with a registry for use by various teams</p>
+</li>
+<li>
+<p><strong>Mock</strong> the APIs to enable faster inner loop development</p>
+</li>
+<li>
+<p><strong>Manage and Secure</strong> APIs to allow access for external teams</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_personalize_this_instructions"><a class="anchor" href="#_personalize_this_instructions"></a><a class="link" href="#_personalize_this_instructions">2.1. Personalize this instructions</a></h3>
+<div class="paragraph">
+<p>To personalize the rest of the instructions to your OpenShift enviroment,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>At the top-right of this page enter</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>username</strong> as <code>user1</code></p>
+</li>
+<li>
+<p><strong>subdomain</strong> to match your OpenShift cluster under the <strong>Your Workshop Environment</strong> section</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Press enter or click on the Set button</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/setup-instructions.png" alt="setup instructions">
+</div>
+</div>
+</li>
+<li>
+<p>The menubar and the rest of this walkthrough guide will be updated with the username and subdomain as shown below</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/setup-instructions-complete.png" alt="setup instructions complete">
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The subdomain would look something like this <code>apps.cluster-name.guid.subdomain.myopenshift.com</code></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_design_apis"><a class="anchor" href="#_design_apis"></a><a class="link" href="#_design_apis">3. Design APIs</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this section you will import an existing API that will be used as a starting point, explore the designer while making a few minor edits. You will then export this to a Service Registry in the next step.</p>
+</div>
+<div class="sect2">
+<h3 id="_import_api"><a class="anchor" href="#_import_api"></a><a class="link" href="#_import_api">3.1. Import API</a></h3>
+<div class="paragraph">
+<p>To import the OpenAPI draft into API designer, you can import the content as text OR upload as file. To keep things simple in this workshop, you will import the content by simply pasting the draft spec into the API designer.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In a real-world scenario you might start with an empty API specification, and define the different elements of the spec document. You would then export the spec in JSON or YAML format (by copying the contents from the source editor) to your local file system and push it to version control.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The API Designer has been pre-deployed on OpenShift. Launch the API Designer by clicking on <a href="https://apicurio-designer.%SUBDOMAIN%" target="api_designer">API Designer</a></p>
+</li>
+<li>
+<p>Click on the <strong>New API</strong> button.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-designer-import-url.png" alt="api designer import url">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on the <strong>Source Tab</strong> on the <strong>New API</strong> page, and delete the entire content in the window.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Note: Keep this tab open. You will be pasting the draft OpenAPI into this window.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-new-api.png" alt="api new api">
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Click <a href="https://raw.githubusercontent.com/cloud-services-summit-connect-2022/product-catalog-api/main/openapi/openapi-spec.yml" target="_blank" rel="noopener">here</a> to view the draft OpenAPI .</p>
+</li>
+<li>
+<p>Copy the entire contents from this webpage (Ctrl+A and Ctrl+C)</p>
+</li>
+<li>
+<p>Now paste the copied content (the draft OpenAPI) from the above step into the API designer&#8217;s <strong>Source Tab</strong> replacing all of the existing content. Click on <strong>Save button</strong> as highlighted in the screenshot below.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-paste-api.png" alt="api paste api">
+</div>
+</div>
+</li>
+<li>
+<p>Navigate back to the <strong>Design Tab</strong></p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-design-tab.png" alt="api design tab">
+</div>
+</div>
+</li>
+<li>
+<p>You can now view  the <code>Product Catalog API</code> on the browser. You can explore the Paths, Data Types and Responses that are part of this API.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-designer-api-import-complete.png" alt="api designer api import complete">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_explore_and_edit_the_api"><a class="anchor" href="#_explore_and_edit_the_api"></a><a class="link" href="#_explore_and_edit_the_api">3.2. Explore and edit the API</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click on the <code>product-list</code> under the <code>Responses</code> section</p>
+</li>
+<li>
+<p>Click on the <code>2 example(s) defined</code> link. You will see the list of examples given</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-designer-product-list-response-eg-list.png" alt="api designer product list response eg list">
+</div>
+</div>
+</li>
+<li>
+<p>At the right-most side of the <strong>Examples</strong> table (scroll sideways), hover the mouse over the <code>product-list-with-inventory</code> example and click on the <strong>Edit</strong> button shown as a <strong>pencil icon</strong>. This opens the example&#8217;s content.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-click-edit.png" alt="api click edit">
+</div>
+</div>
+</li>
+<li>
+<p>The example&#8217;s content is displayed in the popup window.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-designer-sample-original.png" alt="api designer sample original">
+</div>
+</div>
+</li>
+<li>
+<p>Replace the name of the first product by adding your name. I&#8217;ve changed this from <code>Quarkus T-shirt</code> to <code>Jaya&#8217;s Awesome Quarkus T-shirt</code></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Make sure you click  on the <strong>Edit</strong> button to confirm your edits.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-designer-sample-updated.png" alt="api designer sample updated">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>The changes made are now visible on the main screen.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-designer-sample-edit-complete.png" alt="api designer sample edit complete">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The OpenAPI specification is now ready to be downloaded. Click on the <em>down arrow</em> button adjacent to <strong>Save As..</strong> and then choose <strong>Save as YAML</strong> button found on top-right of the page. The file gets saved automatically in the <strong>Downloads folder</strong> of your computer.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/api-download-as-json.png" alt="api download as json">
+</div>
+</div>
+</li>
+<li>
+<p>The Product Catalog OpenAPI spec is ready to be governed with a Service Registry.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>With the API Designer all your designs are stored locally in your browser. Clearing your browser cache or switching to a new browser might result in loss of data. Make sure you save your work by downloading your designs locally or as described in the next step export them to a Red Hat Service Registry instance.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="paragraph">
+<p>You can close all the other browser tabs but this Instructions browser tab you are viewing. In the next section, you will import this API spec and govern it with Red Hat Service Registry.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_govern_apis"><a class="anchor" href="#_govern_apis"></a><a class="link" href="#_govern_apis">4. Govern APIs</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Publish, discover, and reuse artifacts with Red Hat build of Apicurio Registry</p>
+</div>
+<div class="paragraph">
+<p><a href="https://access.redhat.com/documentation/en-us/red_hat_build_of_apicurio_registry" target="_blank" rel="noopener">Red Hat build of Apicurio Registry</a> is a datastore for sharing standard event schemas and API designs across event-driven and API architectures.</p>
+</div>
+<div class="paragraph">
+<p>Goals of this section
+* Import the OpenAPI Spec into Service Registry
+* Enable Content Rules to test OpenAPI format validity</p>
+</div>
+<div class="sect2">
+<h3 id="_launch_service_registry"><a class="anchor" href="#_launch_service_registry"></a><a class="link" href="#_launch_service_registry">4.1. Launch Service Registry</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Launch <strong>Service Registry</strong> by accessing <a href="https://service-registry-%USERID%.%SUBDOMAIN%/ui/" target="service_registry_url">Service Registry</a></p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-landing.png" alt="sr landing">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Red Hat build of Apicurio Registry has been set up within OpenShift <strong>globex-apim-%USERID%</strong> namespace. You can access the deployment from the <a href="https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-apim-%USERID%?view=graph" class="external" target="console">OpenShift Console</a>, and if required login with(<code>%USERID%/openshift</code>).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Click on the <strong>Upload artifact</strong> button as shown in the above screenshot. You will be presented with a <strong>Upload Artifact</strong> wizard</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-upload-artifact.png" alt="sr upload artifact">
+</div>
+</div>
+</li>
+<li>
+<p>In the wizard, enter the following details, and click on the <strong>Upload</strong> button.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Use the exact same values as instructed below to avoid errors in the other sections of this module.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Group</strong>: <code>globex</code></p>
+</li>
+<li>
+<p><strong>ID of the artifact</strong>: <code>ProductCatalogAPI</code></p>
+</li>
+<li>
+<p><strong>Artifact textarea</strong>: Click on <strong>Browse..</strong> button to upload the Product Catalog OpenAPI downloaded in the previous step, or <code>Drag &amp; drop</code> the file into the textarea.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Click the <strong>Upload</strong> button</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-spec-setting.png" alt="sr spec setting">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Note that the <strong>Globex Product Catalog API Gateway</strong> artifact has been uploaded to <strong>Service Registry</strong> and can be viewed on the webpage</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-uploaded.png" alt="sr uploaded">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>This OpenAPI schema can be easily shared with others through the <a href="https://service-registry-%USERID%.%SUBDOMAIN%/apis/registry/v2/groups/globex/artifacts/ProductCatalogAPI" target="_blank" rel="noopener">OpenAPI Schema&#8217;s endpoint</a>.</p>
+</li>
+<li>
+<p>This schema can be used for generating client SDK as well by clicking on the <strong>Generate client SDK</strong> link that can be seen in the screenshot above.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Click on the <strong>Documentation</strong> tab to view the OpenAPI specifications</p>
+</li>
+<li>
+<p>Click on the <strong>Content</strong> tab to view the schema in JSON format</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enabling_artifact_specific_rules_for_format_validity"><a class="anchor" href="#_enabling_artifact_specific_rules_for_format_validity"></a><a class="link" href="#_enabling_artifact_specific_rules_for_format_validity">4.2. Enabling Artifact-specific rules for format validity</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate back to the <strong>Overview</strong> tab.</p>
+</li>
+<li>
+<p>Observe the <strong>Artifact-specific rules</strong> section which provides options to validate the schema and enforce compatibility while the artifact is updated.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-api-content-rules.png" alt="sr api content rules">
+</div>
+</div>
+</li>
+<li>
+<p>Click on <strong>Enable</strong> button (highlighted in the above screenshot) for <strong>Validity rule</strong> and choose <strong>Full</strong> from the dropdown. This rule ensures that the content is valid when the artifact is updated.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-content-rules.png" alt="sr content rules">
+</div>
+</div>
+</li>
+<li>
+<p>Click on the <strong>Content</strong> tab. Copy the entire content of the artifact shown in this tab into the memory with <code>Ctrl+A</code> and <code>Ctrl+C</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-view-content.png" alt="sr view content">
+</div>
+</div>
+</li>
+<li>
+<p>Click on the <strong>Upload new version</strong> button on the top-right of the page, and paste the content of the schema that you copied in the previous steps into the textbox provided with <code>Ctrl+V</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-upload-new-popup.png" alt="sr upload new popup">
+</div>
+</div>
+</li>
+<li>
+<p>Delete the closing <code>}</code> at the bottom of the text box and click <strong>Upload</strong>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The original content:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-original-api-content.png" alt="sr original api content">
+</div>
+</div>
+</li>
+<li>
+<p>After introducing an error:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-edit-schema-with-error.png" alt="sr edit schema with error">
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>You will observe an <code><strong>Invalid Content Error</strong></code> stating that one of the content rules has been violated, and displaying details of the error. The artifact&#8217;s content is not updated.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sr-error.png" alt="sr error">
+</div>
+</div>
+</li>
+<li>
+<p>Click on <code>Close</code> to dismiss the error.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In real-life, the content rules are very helpful when APIs are used to manage Service Registry schema updates. To learn more about view the <a href="https://access.redhat.com/documentation/en-us/red_hat_build_of_apicurio_registry" target="product-page">Product Documentation for Red Hat build of Apicurio Registry</a></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Remember, this OpenAPI schema can be easily shared with others through the <a href="https://service-registry-%USERID%.%SUBDOMAIN%/apis/registry/v2/groups/globex/artifacts/ProductCatalogAPI" target="_blank" rel="noopener">OpenAPI Schema&#8217;s endpoint</a>.</p>
+</div>
+<div class="paragraph">
+<p>You can close all the other browser tabs but this Instructions browser tab you are viewing. In the next step you will explore the use of the ProductCatalogAPI specification to setup mocks.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mock_apis"><a class="anchor" href="#_mock_apis"></a><a class="link" href="#_mock_apis">5. Mock APIs</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_setting_up_mocks_to_help_with_parallel_development"><a class="anchor" href="#_setting_up_mocks_to_help_with_parallel_development"></a><a class="link" href="#_setting_up_mocks_to_help_with_parallel_development">5.1. Setting up mocks to help with parallel development</a></h3>
+<div class="paragraph">
+<p>Now that the OpenAPI specs are finalised, creation of API mocks will enable parallel development streams leading to rapid inner loop development.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The various  dev teams (such as mobile dev) do not need to wait for the APIs to be completely developed and instead can use these mocks to get realistic responses.</p>
+</li>
+<li>
+<p>Backend developers in parallel build the backend applications APIs using modern cloud-native frameworks such as <a href="https://quarkus.io/" target="product-page">Quarkus</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>There are a number of ways to mock APIs including microcks, postman etc. In this module, you will use Microcks which has been deployed on OpenShift already.</p>
+</div>
+<div class="paragraph">
+<p>Goals of this section
+* Import the Product Catalog API from Service Registry
+* Test the imported API using the mock server and look for the change made to one of the examples in the API Designer</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_import_the_product_catalog_api"><a class="anchor" href="#_import_the_product_catalog_api"></a><a class="link" href="#_import_the_product_catalog_api">5.2. Import the Product Catalog API</a></h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Microcks has been set up in dev-mode within OpenShift globex-apim-%USERID% namespace.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Launch <a href="https://microcks-globex-apim-%USERID%.%SUBDOMAIN%/" target="_blank" rel="noopener">microcks</a></p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Microcks has been setup in developer-mode without authentication only for the purpose of this workshop. You can access the deployment from the <a href="https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-apim-%USERID%?view=graph" class="external" target="console">OpenShift Console</a>. If required, login with your username and password (<code>%USERID%/openshift</code>).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Click on the <strong>Importers</strong> button as show in the screenshot below</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/mic-landing.png" alt="mic landing">
+</div>
+</div>
+</li>
+<li>
+<p>You will be presented with the <strong>Import Jobs</strong> page. Click <strong>+Create</strong> button.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/mic-create.png" alt="mic create"></span></p>
+</div>
+</li>
+<li>
+<p>In the <strong>Create a new Job</strong> wizard - <strong>Step 1: Importer Job properties</strong>, fill in the following details as shown in the screenshot below, and click <strong>Next&gt;</strong> button.<br></p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Name</strong>:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Product Catalog</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Repository URL</strong>:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">https://service-registry-%USERID%.%SUBDOMAIN%/apis/registry/v2/groups/globex/artifacts/ProductCatalogAPI</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/mic-create-job.png" alt="mic create job"></span></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The Repository URL that you provided is the OpenAPI Schema&#8217;s URL from Service Registry that you setup in the previous step.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Since there is no Authentication secret to be provided, click <strong>Next &gt;</strong> in <strong>Step 2 - Authentication options</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/mic-create-job-step2.png" alt="mic create job step2"></span></p>
+</div>
+</li>
+<li>
+<p>You can choose to provide a label in the <strong>Labels</strong> step. But since this is not mandatory or relevant to this exercise, you can simply choose to click <strong>Next &gt;</strong> in the <strong>Step 3 - Labels</strong>
+<span class="image"><img src="_images/mic-create-job-step3.png" alt="mic create job step3"></span></p>
+</li>
+<li>
+<p>Click <strong>Create</strong> in the <strong>Step 4 - Review</strong> step of this wizard
+<span class="image"><img src="_images/mic-create-job-step4.png" alt="mic create job step4"></span></p>
+</li>
+<li>
+<p>You would be able to view the Product Catalog API that you imported being listed as shown below. Take special note of the labels as highlighted. If you see an <strong>Error</strong> label, refer to the note shown below</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/mic-import-success.png" alt="mic import success"></span></p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><span class="image"><img src="_images/mic-import-error.png" alt="mic import error"></span>
+If there is an error in fetching the content, this could mean that you had provided a different name to the schema within Service Registry other than <strong>ProductCatalogAPI</strong></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Navigate to the <strong>APIs | Services</strong> to view the API that has been successfully imported. Click on <strong>Product Catalog API</strong> link (highlighted in the screenshot below)</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/mic-view-api.png" alt="mic view api"></span></p>
+</div>
+</li>
+<li>
+<p>View the details of the imported Product Catalog</p>
+</li>
+<li>
+<p>Click on the arrow <strong>&gt;</strong> against the first operation <strong>GET /services/product/list/{ids}</strong> to view the details of this operation.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>You may note that this operation holds the example that you had edited to include your name :)</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/mic-view-api-details.png" alt="mic view api details"></span></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>You will now be able to see the Mock URL, the response code and other details for this specific operation</p>
+</li>
+<li>
+<p>Copy the Mock URL by clicking on the <strong>Copy icon</strong> shown in the Mock tab named <strong>product-list-with-inventory</strong>. Refer to the screenshot below.</p>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The order in which the Mocks are displayed could be different from the screenshot. So ensure you are choosing <strong>product-list-with-inventory</strong> and not the <strong>product-list-without-inventory</strong></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/mic-view-api-operation1.png" alt="mic view api operation1"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_try_out_the_mock_url"><a class="anchor" href="#_try_out_the_mock_url"></a><a class="link" href="#_try_out_the_mock_url">5.3. Try out the mock URL</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open a new browser tab, and navigate to the Mock URL you copied in the above step.</p>
+</li>
+<li>
+<p>You can view the list of products from the example of the Mock. Note that the name of the Quarkus T-shirt now says <code>Jaya&#8217;s Awesome Quarkus T-shirt</code> (or the name you have for this product)</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/mic-final-mock.png" alt="mic final mock"></span></p>
+</div>
+</li>
+<li>
+<p>These mock end points of the mock server can be used by the dev teams that are dependent on the APIs, to continue development in parallel without having to wait for the backend services to be fully developed, thereby accelerating time to market.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Go ahead and close all the other browser tabs but this Instructions browser tab you are viewing.<br>
+In the next step, you will learn to protect the API by using Red Hat 3scale API Management.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manage_and_secure_apis"><a class="anchor" href="#_manage_and_secure_apis"></a><a class="link" href="#_manage_and_secure_apis">6. Manage and Secure APIs</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">6.1. Introduction</a></h3>
+<div class="paragraph">
+<p>Once the backend teams fully develop the APIs backends, the APIs can be published for external consumption with an API management platform. Globex uses <a href="https://www.redhat.com/en/technologies/jboss-middleware/3scale" class="external" target="product_page">Red Hat 3scale API Management</a> for managing these APIs. The external teams such as the mobile team will be able to use the built-in developer portal of 3scale to sign up for various application plans.</p>
+</div>
+<div class="paragraph">
+<p>In this section you will</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Launch the 3scale tenant which has been created for you</p>
+</li>
+<li>
+<p>Manage and secure the predeployed Product Catalog API with 3scale</p>
+</li>
+<li>
+<p>Test secure access of the Product Catalog API</p>
+</li>
+<li>
+<p>View the traffic analytics generated</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_access_3scale"><a class="anchor" href="#_access_3scale"></a><a class="link" href="#_access_3scale">6.2. Access 3scale</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <a href="https://3scale-%USERID%-admin.%SUBDOMAIN%" target="3scale">3scale</a> to launch the 3scale tenant created for you.</p>
+</li>
+<li>
+<p>Login with your username and password (<code>%USERID%/openshift</code>)</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/3scale-login.png" alt="3scale login"></span></p>
+</div>
+</li>
+<li>
+<p>Notice than a sample API which has been already set up. You will not be using this but will be creating a new one for this workshop for the <strong>Product Catalog API</strong> that you&#8217;ve been working on so far.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/3scale-landing-page.png" alt="3scale landing page"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="3scale-definitions-guide"><a class="anchor" href="#3scale-definitions-guide"></a><a class="link" href="#3scale-definitions-guide">6.3. Create Mobile Gateway Backend, Product and ActiveDoc on 3scale</a></h3>
+<div class="paragraph">
+<p>To integrate and manage the Product Catalog API in 3scale, you need to create Products and Backend.</p>
+</div>
+<div class="paragraph">
+<p>In this lab you will declare the 3scale assets like Product and Backend as Kubernetes Custom Resources. The Custom Resources are detected by the 3scale operator which applies and synchronizes the Custom Resources (CRDs) on the 3scale platform.</p>
+</div>
+<div class="paragraph">
+<p>Note: <a href="#3scale-definitions">Click to learn more about Backends, Products, ActiveDocs and CRDs</a></p>
+</div>
+<div class="sect3">
+<h4 id="create-backend"><a class="anchor" href="#create-backend"></a><a class="link" href="#create-backend">6.3.1. Create 3scale Backend</a></h4>
+<div class="paragraph">
+<p>To create the Backend for Product Catalog API Gateway, you will need the Service URL of Product Catalog deployment which is already running on OpenShift.<br></p>
+</div>
+<div class="paragraph">
+<p>Note: <a href="#openshift-service">Click to learn more about OpenShift/Kubernetes Service and how to find it</a></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to the <a href="https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-apim-%USERID%?view=graph" class="external" target="console">OpenShift Console</a>. If required, login with your username and password (<code>%USERID%/openshift</code>). Open the <strong>Developer</strong> perspective in the <strong>globex-apim-%USERID%</strong></p>
+</li>
+<li>
+<p>On the OpenShift console, click on the <span class="image"><img src="_images/console-import-yaml.png" alt="console import yaml"></span> icon in the top menu on the right. This opens an editor where you can enter a Kubernetes resource definition in YAML format.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-openshift-import.png" alt="apim openshift import"></span></p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Paste the following <strong>Backend</strong> 3scale Custom Resource in the editor.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: capabilities.3scale.net/v1beta1
+kind: Backend
+metadata:
+  name: globex-product-catalog-backend
+  namespace: globex-apim-%USERID%
+spec:
+  name: "Globex Product Catalog Backend"
+  systemName: "globex-product-catalog-backend"
+  privateBaseURL: "http://catalog.globex-%USERID%.svc.cluster.local:8080"
+  providerAccountRef:
+    name: 3scale-tenant-secret
+  metrics:
+    hits:
+      description: Number of API hits
+      friendlyName: Hits
+      unit: "hit"
+  mappingRules:
+    - httpMethod: GET
+      pattern: "/"
+      increment: 1
+      metricMethodRef: hits</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-create-backend-cr.png" alt="apim create backend cr"></span></p>
+</div>
+</li>
+<li>
+<p>Click <strong>Create</strong> to create the 3scale Backend resource. The 3scale operator creates the Backend resource in your 3scale tenant.</p>
+</li>
+<li>
+<p>You are shown the <strong>Backend details</strong> page. Note under the <strong>Conditions</strong> section at the bottom of the page, the Type <strong>Synced</strong> is set with Status as <strong>True</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-create-backend-details.png" alt="apim create backend details"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Click on <a href="https://3scale-%USERID%-admin.%SUBDOMAIN%" target="3scale">3scale</a> to view the backend created for you.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-backend-created.png" alt="apim backend created"></span></p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Click on the Backend <strong>Globex Product Catalog Backend</strong> link to view the Backend overview page.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-backend-overview.png" alt="apim backend overview"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<hr>
+</div>
+<div class="sect3">
+<h4 id="3scale-product"><a class="anchor" href="#3scale-product"></a><a class="link" href="#3scale-product">6.3.2. Create 3scale Product and ActiveDocs</a></h4>
+<div class="paragraph">
+<p>The next step is to create a 3scale Product, Application Plans for the Product, and also ActiveDocs for the Product Catalog API</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to the <a href="https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-%USERID%?view=graph" class="external" target="console">OpenShift Console</a>.</p>
+</li>
+<li>
+<p>On the OpenShift console, click on the <span class="image"><img src="_images/console-import-yaml.png" alt="console import yaml"></span> icon in the top menu on the right. This opens an editor where you can enter a Kubernetes resource definition in YAML format.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Paste the following <strong>Product and ActiveDoc</strong> 3scale Custom Resource in the editor.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: capabilities.3scale.net/v1beta1
+kind: Product
+metadata:
+  name: globex-product-catalog-product
+  namespace: globex-apim-%USERID%
+spec:
+  name: "Globex Product Catalog"
+  systemName: "globex-product-catalog-product"
+  providerAccountRef:
+    name: 3scale-tenant-secret
+  applicationPlans:
+    basic:
+      name: "Globex Catalog Basic Plan"
+      setupFee: "0"
+      published: true
+    premium:
+      name: "Globex Catalog Premium Plan"
+      setupFee: "100"
+      published: true
+  backendUsages:
+    globex-product-catalog-backend:
+      path: /
+
+---
+kind: ActiveDoc
+apiVersion: capabilities.3scale.net/v1beta1
+metadata:
+  name: globex-product-catalog-activedoc
+  namespace: globex-apim-%USERID%
+spec:
+  activeDocOpenAPIRef:
+    url: "https://service-registry-%USERID%.%SUBDOMAIN%/apis/registry/v2/groups/globex/artifacts/ProductCatalogAPI"
+  published: true
+  name: globex-product-catalog-activedoc
+  providerAccountRef:
+    name: 3scale-tenant-secret
+  productSystemName: globex-product-catalog-product</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-prod-activedoc-cr.png" alt="apim prod activedoc cr"></span></p>
+</div>
+</li>
+<li>
+<p>Click <strong>Create</strong> to create the 3scale resources, and the 3scale operator creates these resources in your 3scale tenant</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-prod-activedoc-created.png" alt="apim prod activedoc created"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Click on <a href="https://3scale-%USERID%-admin.%SUBDOMAIN%" target="3scale">3scale</a> to view the Product and ActiveDoc created for you</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-prod-created.png" alt="apim prod created"></span></p>
+</div>
+</li>
+<li>
+<p>Click on the Product <strong>Globex Product Catalog</strong> link to view the overview page. Note that the <strong>Backends</strong> and the <strong>Published Application Plans</strong> that you created have been attached to the Product.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-prod-overview.png" alt="apim prod overview"></span></p>
+</div>
+</li>
+<li>
+<p>Click on <strong>ActiveDocs</strong> link on the left hand navigation</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-prod-activedocs.png" alt="apim prod activedocs"></span></p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Click on the <strong>globex-product-catalog-activedoc</strong> ActiveDoc to view the API</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-activedoc-view.png" alt="apim activedoc view"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div id="apicast-guide" class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Before you can start accessing the Product Catalog API, you must promote the APIcast configuration as below.<br></p>
+<div class="paragraph">
+<p>Note: <a href="#apicast">Click to learn more about APIcast</a></p>
+</div>
+</li>
+<li>
+<p>From <a href="https://3scale-%USERID%-admin.%SUBDOMAIN%" target="3scale">3scale homepage</a>, under the Products section, click on <strong>Globex Product Catalog</strong> to view the Product&#8217;s overview page.</p>
+</li>
+<li>
+<p>From the left hand menu, navigate to <strong>Integration</strong> &gt; <strong>Configuration</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-prod-integ-config.png" alt="apim prod integ config"></span></p>
+</div>
+</li>
+<li>
+<p>Under <strong>APIcast Configuration</strong>, click <strong>Promote to v.x Staging APICast</strong> to promote the APIcast configurations.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/apim-promote-staging.png" alt="apim promote staging">
+</div>
+</div>
+</li>
+<li>
+<p>Similarly click <strong>Promote to v.x Production APICast</strong></p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/apim-promote-prod.png" alt="apim promote prod">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_an_application_for_the_default_account"><a class="anchor" href="#_create_an_application_for_the_default_account"></a><a class="link" href="#_create_an_application_for_the_default_account">6.4. Create an Application for the default account</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <a href="https://3scale-%USERID%-admin.apps.cluster-vxhmd.sandbox1011.opentlc.com/buyers/accounts" target="3scale">Audience section</a> of 3scale from the the top menu bar</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-audeince-menu.png" alt="apim audeince menu"></span></p>
+</div>
+</li>
+<li>
+<p>You will be shown the <strong>Accounts &gt; Listing</strong> page showing a default <strong>Developer</strong> account that has already been created.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-developer-account.png" alt="apim developer account"></span></p>
+</div>
+</li>
+<li>
+<p>Click on <strong>Developer</strong> to view the Developer Account details.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Click on the <strong><u>1 Application</u></strong> link on the top of the page</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-dev-acc-details.png" alt="apim dev acc details"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>The existing list of applications associated with this Developer user is displayed.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Note that there is already a default application which has been associated with this user.</p>
+</li>
+<li>
+<p>Click <strong>Create Application</strong> button</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-create-app.png" alt="apim create app"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Choose/Enter the following details in the <strong>Create Application</strong> page:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Product</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Globex Product Catalog</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Application plan</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Globex Catalog Basic Plan</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Name</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">product-catalog-basic</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Description</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Globex Product Catalog - Basic App</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-new-app-data.png" alt="apim new app data"></span></p>
+</div>
+</li>
+<li>
+<p>Click the <strong>Create Application</strong> button.</p>
+</li>
+<li>
+<p>You can see the <strong>product-catalog-basic</strong> application details now as shown below.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-create-app-success.png" alt="apim create app success"></span></p>
+</div>
+</li>
+<li>
+<p>Make a note of the <code>User Key</code> that is displayed under the <strong>API Credentials</strong> section as highlighted in the above screenshot. This will be used while making calls to the API.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Note: In real life, developers will create Applications from the integrated 3scale Developer Portal.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p></p>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_test_product_catalog_api_access"><a class="anchor" href="#_test_product_catalog_api_access"></a><a class="link" href="#_test_product_catalog_api_access">6.5. Test Product Catalog API Access</a></h3>
+<div class="paragraph">
+<p>To test the secure access of this API, you will use a simple Angular application which reads from the Product Catalog API endpoint and displays it on the browser.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to the <a href="https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-apim-%USERID%?view=graph" class="external" target="console">OpenShift Console</a> to access the <strong>globex-apim-%USERID%</strong> namespace in it.</p>
+</li>
+<li>
+<p>Click on the <strong>Open URL</strong> icon highlighted in the screenshot below to view the Angular mobile application.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-launch-mobile.png" alt="apim launch mobile"></span></p>
+</div>
+</li>
+<li>
+<p>You will see an empty page because the application is not configured to talk to the Product Catalog API yet. In the next steps you will configure the app to connect with the Product Catalog API.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-mobile-empty.png" alt="apim mobile empty"></span></p>
+</div>
+</li>
+<li>
+<p>From the OpenShift console that you have already opened, click on <strong>globex-mobile</strong> as highlighted below to view the <strong>Deployment</strong> details.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-namespace.png" alt="apim namespace"></span></p>
+</div>
+</li>
+<li>
+<p>In the deployment panel, click on the Deployment <strong>globex-mobile</strong> to navigate to the Deployment details page.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-mobile-deployment-panel.png" alt="apim mobile deployment panel"></span></p>
+</div>
+</li>
+<li>
+<p>Click on the <strong>Environment</strong> tab from the Deployment details page.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-mobile-deployment-details.png" alt="apim mobile deployment details"></span></p>
+</div>
+</li>
+<li>
+<p>Note that there are two variables with values <code>replace-me</code>. You will need to update these variables which will need to be fetched from 3scale.<br></p>
+</li>
+<li>
+<p>Update the 2 placeholders as instructed below</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-mobile-env.png" alt="apim mobile env"></span></p>
+</div>
+</li>
+<li>
+<p><strong>GLOBEX_PRODUCT_CATALOG_API</strong>: We will use the Staging APICast URL of the <strong>Globex Product Catalog</strong> created in 3scale.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Launch <a href="https://3scale-%USERID%-admin.%SUBDOMAIN%" target="3scale">3scale Dashboard</a>, and click on <strong>Globex Product Catalog</strong> link to view the Product Details</p>
+</li>
+<li>
+<p>Next navigate to <strong>Integration &gt; Configuration</strong> from the left hand navigation, and copy the URL show under <strong>Staging APIcast</strong> section</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-staging-url.png" alt="apim staging url"></span></p>
+</div>
+</li>
+<li>
+<p>Paste the URL copied in the above step into the globex-mobile Deployment&#8217;s Environment variable <strong>GLOBEX_PRODUCT_CATALOG_API</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-staging-url-pasted.png" alt="apim staging url pasted"></span></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>USER_KEY</strong>: This is the API Credentials that you were provided when you signed up for an Application Plan</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Click <a href="https://3scale-%USERID%-admin.%SUBDOMAIN%/p/admin/applications" target="3scale">Applications</a> to view the list <strong>Applications for Developer</strong> account, and click on <strong>product-catalog-basic</strong> application.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-developer-applications.png" alt="apim developer applications"></span></p>
+</div>
+</li>
+<li>
+<p>Copy the <strong>User Key</strong> as show in this page</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-user-key-var.png" alt="apim user key var"></span></p>
+</div>
+</li>
+<li>
+<p>Paste this into the Deployment Environment variable <strong>USER_KEY</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-user-key-pasted.png" alt="apim user key pasted"></span></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>The globex-mobile Deployment&#8217;s Environment values should look similar to this. Click on <strong>Save</strong> button at the bottom of the page.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-mobile-env-complete.png" alt="apim mobile env complete"></span></p>
+</div>
+</li>
+<li>
+<p>A new pod will be automatically created with the new endpoint and user_key, and the application is ready to be tested.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Click on the Pod tab to view the creation of a new pod. You will need to be quick or you may miss the pod creation :)</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-mobile-new-pod.png" alt="apim mobile new pod"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Launch <a href="https://globex-mobile-globex-apim-%USERID%.%SUBDOMAIN%" target="mobile">Globex Mobile</a> to view the products in a browser. It may take a couple of seconds for the data to load.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-mobile-browser-view.png" alt="apim mobile browser view"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_view_traffic_analytics"><a class="anchor" href="#_view_traffic_analytics"></a><a class="link" href="#_view_traffic_analytics">6.6. View Traffic Analytics</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Refresh the <a href="https://globex-mobile-globex-apim-%USERID%.%SUBDOMAIN%" target="mobile">Globex Mobile</a> page a few times to generate traffic.</p>
+</li>
+<li>
+<p>Navigate to <a href="https://3scale-%USERID%-admin.%SUBDOMAIN%" target="3scale">3scale Dashboard</a>, and click on <strong>globex-product-catalog-product</strong> to view the Product Details</p>
+</li>
+<li>
+<p>Click on the <strong>Analytics &#8594; Traffic</strong> link on the left hand side menu. You will see the <strong>Hits</strong> details.</p>
+</li>
+<li>
+<p>This section provides insights in terms of the number of hits for the product and other traffic analysis details as well.</p>
+<div class="paragraph">
+<p><span class="image"><img src="_images/apim-traffic.png" alt="apim traffic"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary"><a class="anchor" href="#_summary"></a><a class="link" href="#_summary">7. Summary</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Congratulations! You have reached the end of the <strong>Manage and secure APIs with OpenShift API Management</strong> module of this workshop. You learnt about the various aspects of API Lifecycle management using a gamut of technologies including Red Hat build of Apicurio Registry, Red Hat 3scale API Management, Apicurio design and Microcks.</p>
+</div>
+<div class="paragraph">
+<p>To learn more about click <a href="https://developers.redhat.com/topics/api-management" target="_blank" rel="noopener">API Management</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_learn_more"><a class="anchor" href="#_appendix_learn_more"></a><a class="link" href="#_appendix_learn_more">8. Appendix: Learn More</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="3scale-definitions"><a class="anchor" href="#3scale-definitions"></a><a class="link" href="#3scale-definitions">8.1. What are Backend, Product, ActiveDocs and CRDs?</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Backends</strong> are Internal APIs which are then bundled into a 3scale Product. It contains at least the URL of the API. It can optionally be configured with mapping rules, methods and metrics to facilitate reusability.</p>
+</li>
+<li>
+<p><strong>Products</strong> are the Customer-facing APIs. It defines the application plans, and configure APIcast</p>
+</li>
+<li>
+<p><strong>ActiveDocs</strong> are interactive documentation for your API offered as a framework by 3scale. You can create API documentation by attaching the Product Catalog OpenAPI schema as a <strong>3scale ActiveDoc</strong></p>
+</li>
+<li>
+<p>A CRD file allows you to define your own object kinds (Backend, API, ActiveDoc etc) and lets the API Server handle the entire lifecycle of the objects.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>&lt;&lt; <a href="#3scale-definitions-guide">back to instructions</a></p>
+</div>
+<div class="paragraph">
+<p></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="openshift-service"><a class="anchor" href="#openshift-service"></a><a class="link" href="#openshift-service">8.2. What is a OpenShift/Kubernetes Service?</a></h3>
+<div class="paragraph">
+<p>In OpenShift, a Kubernetes Service serves as an internal load balancer and identifies pods which in turn have the applications. If the application needs to be accessed from outside of OpenShift, you will need OpenShift routes.<br>
+In this workshop, since both 3scale and the Product Catalog API run on OpenShift, 3scale will proxy requests to the backend using Services. This also means the backend cannot be accessed directly from outside OpenShift.</p>
+</div>
+<div class="paragraph">
+<p><strong>Finding the Private endpoint of the Product Catalog service deployed on OpenShift</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In a browser window, navigate to the console of the lab OpenShift cluster at <a href="https://console-openshift-console.%SUBDOMAIN%/topology/ns/globex-%USERID%?view=graph" class="external" target="_blank" rel="noopener">Topology view</a>.</p>
+</li>
+<li>
+<p>Login with your username and password (<code>%USERID%/openshift</code>). Open the <strong>Developer</strong> perspective in the <strong>globex-%USERID%</strong> namespace.</p>
+</li>
+<li>
+<p>Click on the <code><strong>catalog icon</strong></code> to see the deployment details appear on the right-hand. Under the <strong>Resources</strong> tab, click on <strong>catalog</strong> Service as indicated in the screenshot above.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/apim-catalog-service.png" alt="apim catalog service">
+</div>
+</div>
+</li>
+<li>
+<p>You will be navigated to the Service Details page of the <strong>catalog</strong> service. Copy the <strong>Hostname</strong> highlighted in the screenshot below</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/apim-catalog-service-details.png" alt="apim catalog service details">
+</div>
+</div>
+<div class="paragraph">
+<p>This would look something like this: <code>catalog.globex-%USERID%.svc.cluster.local</code></p>
+</div>
+</li>
+<li>
+<p>This hostname is used as the <strong>Private endpoint</strong> while creating the Backend.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>&lt;&lt; <a href="#create-backend">back to instructions</a></p>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="apicast"><a class="anchor" href="#apicast"></a><a class="link" href="#apicast">8.3. What is APIcast?</a></h3>
+<div class="paragraph">
+<p>APIcast is an NGINX based API gateway used to integrate your internal and external API services with the Red Hat 3scale Platform. In this workshop we use the two built-in APICast (staging and production) that come by default with the 3scale installation. They come pre-configured and ready to use out-of-the-box.<br></p>
+</div>
+<div class="paragraph">
+<p>&lt;&lt; <a href="#apicast-guide">back to instructions</a></p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="02-architecture.html" class="query-params-link">2. Architecture</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img
+          src="../_/img/app-services-logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"  href="https://redhat.com" ></a>
+</footer><script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
