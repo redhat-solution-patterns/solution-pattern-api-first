@@ -54,7 +54,7 @@ image::globex-deployment-apim.png[]
 
 
 [#more_tech]
-== About the Technology Stack
+== More about the Technology Stack
 
 === Apicurio
 As part of the API-First approach, the first step, of course, is to design the APIs. API Designer is a tool to design your APIs (OpenAPI, AsyncAPI) and schemas (Apache Avro, Google Protobuf, JSON Schema). Even before the implementation starts, the various stakeholders come together to define the API specs. The API are defined for the existing catalogue service as well. 
