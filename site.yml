@@ -2,9 +2,11 @@ runtime:
   cache_dir: ./.cache/antora
 
 site:
-  title: Manage and Secure APIs with an API First Approach
+  title: Solution Patterns from Red Hat
   url: https://redhat-solution-patterns.github.io/solution-patterns/
   start_page: api-first::index.adoc
+  keys:
+    google_analytics: 'G-9TW8CJFT3N'
 
 content:
   sources:
